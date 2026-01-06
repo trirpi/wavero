@@ -1,0 +1,37 @@
+{
+    // CMake configuration
+    "cmake.buildDirectory": "${workspaceFolder}/Builds",
+    "cmake.configureOnOpen": false,
+    "cmake.sourceDirectory": "${workspaceFolder}",
+
+    // C++ IntelliSense
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "C_Cpp.default.compileCommands": "${workspaceFolder}/Builds/compile_commands.json",
+    
+    // Editor settings for JUCE development
+    "files.associations": {
+        "*.h": "cpp",
+        "*.cpp": "cpp"
+    },
+    
+    // Clang-format (uses the .clang-format file in the project root)
+    "C_Cpp.clang_format_style": "file",
+    "editor.formatOnSave": true,
+    
+    // File exclusions for cleaner explorer
+    "files.exclude": {
+        "**/Builds/**": false,
+        "**/.DS_Store": true,
+        "**/CMakeFiles": true,
+        "**/cmake-build-*": true
+    },
+    
+    // Search exclusions
+    "search.exclude": {
+        "**/JUCE/**": true,
+        "**/Builds/**": true,
+        "**/modules/clap-juce-extensions/**": true,
+        "**/modules/melatonin_inspector/**": true
+    }
+}
+

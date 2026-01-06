@@ -1,0 +1,40 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Standalone (LLDB)",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/Builds/Wavero_artefacts/Debug/Standalone/Wavero.app/Contents/MacOS/Wavero",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "CMake: Build Standalone",
+            "stopOnEntry": false
+        },
+        {
+            "name": "Debug Standalone (CodeLLDB)",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/Builds/Wavero_artefacts/Debug/Standalone/Wavero.app",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "CMake: Build Standalone"
+        },
+        {
+            "name": "Attach to Process",
+            "type": "lldb",
+            "request": "attach",
+            "pid": "${command:pickProcess}"
+        },
+        {
+            "name": "Debug Tests",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/Builds/Tests_artefacts/Debug/Tests",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "Run Tests"
+        }
+    ]
+}
+

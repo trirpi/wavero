@@ -1,0 +1,30 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/JUCE/modules",
+                "${workspaceFolder}/source",
+                "${workspaceFolder}/modules/**"
+            ],
+            "defines": [
+                "JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1",
+                "JUCE_STRICT_REFCOUNTEDPOINTER=1",
+                "DEBUG=1",
+                "_DEBUG=1",
+                "JUCE_DEBUG=1"
+            ],
+            "macFrameworkPath": [
+                "/System/Library/Frameworks",
+                "/Library/Frameworks"
+            ],
+            "cStandard": "c17",
+            "cppStandard": "c++23",
+            "intelliSenseMode": "macos-clang-arm64",
+            "compileCommands": "${workspaceFolder}/Builds/compile_commands.json"
+        }
+    ],
+    "version": 4
+}
+
