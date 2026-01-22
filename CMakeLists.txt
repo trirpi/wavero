@@ -27,10 +27,17 @@ set(PROJECT_NAME "Wavero")
 set(PRODUCT_NAME "Wavero")
 
 # Used for the MacOS bundle name and Installers
-set(COMPANY_NAME "Wavero")
+set(COMPANY_NAME "Tristan Trouwen")
 
 # Used for the MacOS bundle identifier (and signing)
-set(BUNDLE_ID "com.wavero.wavero")
+set(BUNDLE_ID "com.tristantrouwen.wavero")
+
+# Optional: Company website and email (shown in some plugin hosts)
+set(COMPANY_WEBSITE "https://trirpi.github.io")
+set(COMPANY_EMAIL "")
+
+# Plugin description
+set(PLUGIN_DESCRIPTION "A granular synthesizer with Art Deco aesthetics")
 
 # Change me! Set the plugin formats you want built
 # Valid choices: AAX Unity VST VST3 AU AUv3 Standalone
@@ -64,20 +71,35 @@ juce_add_plugin("${PROJECT_NAME}"
     # Icons for the standalone app
     ICON_BIG "${CMAKE_CURRENT_SOURCE_DIR}/packaging/icon.png"
 
+    # Company/Author info
     COMPANY_NAME "${COMPANY_NAME}"
+    COMPANY_WEBSITE "${COMPANY_WEBSITE}"
+    COMPANY_EMAIL "${COMPANY_EMAIL}"
     BUNDLE_ID "${BUNDLE_ID}"
+
+    # Plugin description (shown in some hosts)
+    DESCRIPTION "${PLUGIN_DESCRIPTION}"
 
     # On MacOS, plugin is copied to /Users/yourname/Library/Audio/Plug-Ins/
     COPY_PLUGIN_AFTER_BUILD TRUE
 
     # A four-character plugin id
     # First character MUST be uppercase for AU formats
-    PLUGIN_MANUFACTURER_CODE Wave
+    PLUGIN_MANUFACTURER_CODE Trtw
 
     # A unique four-character plugin id
     # Note: this must have at least one upper-case character
-    PLUGIN_CODE Wv01
+    PLUGIN_CODE Wvro
     FORMATS "${FORMATS}"
+
+    # Plugin is a synth (generates audio, responds to MIDI)
+    IS_SYNTH TRUE
+    NEEDS_MIDI_INPUT TRUE
+    NEEDS_MIDI_OUTPUT FALSE
+    IS_MIDI_EFFECT FALSE
+
+    # Editor wants keyboard focus for virtual keyboard
+    EDITOR_WANTS_KEYBOARD_FOCUS TRUE
 
     # The name of your final executable
     # This is how it's listed in the DAW

@@ -6,6 +6,50 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 
 //==============================================================================
+// Custom font holder - loads Playfair Display from binary data
+class CustomFonts
+{
+public:
+    CustomFonts()
+    {
+        // Load static font files from binary data
+        regularTypeface = juce::Typeface::createSystemTypefaceFor (
+            BinaryData::PlayfairDisplayRegular_ttf,
+            BinaryData::PlayfairDisplayRegular_ttfSize);
+            
+        boldTypeface = juce::Typeface::createSystemTypefaceFor (
+            BinaryData::PlayfairDisplayBold_ttf,
+            BinaryData::PlayfairDisplayBold_ttfSize);
+    }
+
+    juce::Font getFont (float height, bool bold = false) const
+    {
+        auto typeface = bold ? boldTypeface : regularTypeface;
+        if (typeface != nullptr)
+        {
+            return juce::Font (juce::FontOptions (typeface).withHeight (height));
+        }
+        return juce::Font (juce::FontOptions (height));
+    }
+
+    juce::Font getTitleFont (float height) const
+    {
+        return getFont (height, true);
+    }
+
+    juce::Font getLabelFont (float height) const
+    {
+        return getFont (height, false);
+    }
+    
+    bool isLoaded() const { return regularTypeface != nullptr && boldTypeface != nullptr; }
+
+private:
+    juce::Typeface::Ptr regularTypeface;
+    juce::Typeface::Ptr boldTypeface;
+};
+
+//==============================================================================
 struct GrainParticle
 {
     float x = 0.0f;
@@ -24,6 +68,8 @@ class FuturisticSliderLookAndFeel : public juce::LookAndFeel_V4
 public:
     FuturisticSliderLookAndFeel();
 
+    void setCustomFonts (const CustomFonts* fonts) { customFonts = fonts; }
+
     void drawLinearSlider (juce::Graphics& g, int x, int y, int width, int height,
                            float sliderPos, float minSliderPos, float maxSliderPos,
                            juce::Slider::SliderStyle style, juce::Slider& slider) override;
@@ -33,6 +79,15 @@ public:
     void drawButtonBackground (juce::Graphics& g, juce::Button& button,
                                const juce::Colour& backgroundColour,
                                bool isMouseOver, bool isButtonDown) override;
+
+    juce::Font getTextButtonFont (juce::TextButton&, int buttonHeight) override;
+    juce::Font getLabelFont (juce::Label&) override;
+    
+    void drawButtonText (juce::Graphics& g, juce::TextButton& button,
+                         bool isMouseOverButton, bool isButtonDown) override;
+
+private:
+    const CustomFonts* customFonts = nullptr;
 };
 
 //==============================================================================
@@ -41,7 +96,7 @@ class WaveformDisplay : public juce::Component,
                         public juce::Timer
 {
 public:
-    WaveformDisplay (PluginProcessor& p);
+    WaveformDisplay (PluginProcessor& p, const CustomFonts& fonts);
     ~WaveformDisplay() override;
 
     void paint (juce::Graphics& g) override;
@@ -50,6 +105,8 @@ public:
     void mouseDown (const juce::MouseEvent& event) override;
     void mouseEnter (const juce::MouseEvent& event) override;
     void mouseExit (const juce::MouseEvent& event) override;
+    void mouseDrag (const juce::MouseEvent& event) override;
+    void mouseWheelMove (const juce::MouseEvent& event, const juce::MouseWheelDetails& wheel) override;
 
     bool isInterestedInFileDrag (const juce::StringArray& files) override;
     void filesDropped (const juce::StringArray& files, int x, int y) override;
@@ -64,6 +121,7 @@ public:
 
 private:
     PluginProcessor& processor;
+    const CustomFonts& customFonts;
     float positionMarker = 0.0f;
     float sprayAmount = 0.0f;
     bool isDragOver = false;
@@ -73,6 +131,12 @@ private:
     std::array<float, 64> grainGlowIntensity {};
     juce::Random random;
     std::array<GrainVisualInfo, 64> cachedGrainVisuals;
+    
+    // Scrolling for long samples
+    float scrollOffset = 0.0f;  // 0.0 to 1.0 representing scroll position
+    float lastDragX = 0.0f;
+    bool needsScroll = false;
+    double cachedSampleDuration = 0.0;
 
     juce::Colour waveformColour { 0xff00d4ff };
     juce::Colour backgroundColour { 0xff080810 };
@@ -105,6 +169,7 @@ public:
 
 private:
     PluginProcessor& processorRef;
+    CustomFonts customFonts;
     FuturisticSliderLookAndFeel sliderLookAndFeel;
 
     // Virtual MIDI Keyboard
@@ -159,8 +224,8 @@ private:
     juce::Colour accentColour { 0xff00d4ff };
     juce::Colour secondaryColour { 0xffe94560 };
     juce::Colour tertiaryColour { 0xff9d4edd };
-    juce::Colour textColour { 0xffc0c0c0 };
-    juce::Colour dimTextColour { 0xff606070 };
+    juce::Colour textColour { 0xffe8e8e8 };
+    juce::Colour dimTextColour { 0xffb8b8c0 };
 
     void setupSlider (juce::Slider& slider, juce::Label& label, const juce::String& labelText, int colourIndex);
     void loadSampleFile();

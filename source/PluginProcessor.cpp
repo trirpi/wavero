@@ -262,7 +262,7 @@ PluginProcessor::PluginProcessor()
                    juce::ParameterID { GRAIN_SIZE_ID, 1 },
                    "Grain Size",
                    juce::NormalisableRange<float> (10.0f, 3000.0f, 1.0f, 0.35f),
-                   80.0f,  // Smaller default grain size
+                   1000.0f,  // Default to 1 second (middle position)
                    juce::AudioParameterFloatAttributes().withLabel ("ms")),
 
                std::make_unique<juce::AudioParameterFloat> (
@@ -275,15 +275,15 @@ PluginProcessor::PluginProcessor()
                std::make_unique<juce::AudioParameterFloat> (
                    juce::ParameterID { PITCH_ID, 1 },
                    "Pitch",
-                   juce::NormalisableRange<float> (0.25f, 4.0f, 0.01f, 0.5f),
+                   juce::NormalisableRange<float> (0.25f, 4.0f, 0.01f, 0.43f),  // Skew adjusted so 1.0 (0 st) is at center
                    1.0f,
-                   juce::AudioParameterFloatAttributes().withLabel ("x")),
+                   juce::AudioParameterFloatAttributes().withLabel ("st")),
 
                std::make_unique<juce::AudioParameterFloat> (
                    juce::ParameterID { SPRAY_ID, 1 },
                    "Spray",
                    juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f),
-                   0.15f),
+                   0.5f),  // Default to middle
 
                std::make_unique<juce::AudioParameterFloat> (
                    juce::ParameterID { GAIN_ID, 1 },

@@ -138,6 +138,7 @@ public:
     // Thread-safe sample info for UI display
     int getSampleNumSamples() const { return sampleBuffer.getNumSamples(); }
     int getSampleNumChannels() const { return sampleBuffer.getNumChannels(); }
+    double getSampleSampleRate() const { return sampleSampleRate; }
 
     // Preset management
     void savePreset (const juce::File& file);
